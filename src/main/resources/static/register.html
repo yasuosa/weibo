@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<form method="post" action="" id="zcFrm">
+    用户名<input type="text" name="loginname"> <br>
+    密码<input type="text" name="password"> <br>
+    <input type="button" value="注册" id="btn">
+</form>
+<script src="/resources/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        $("#btn").click(function () {
+            $.post("/login/toRegister", $("#zcFrm").serialize(), function (res) {
+                alert(res.msg);
+            })
+        });
+    });
+</script>
+
+<script src="/resources/jquery-3.4.1.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+#服务器端口
+server:
+  port: 3000
+#数据库配置
+spring:
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/weibo?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
+    druid:
+      min-idle: 10
+      max-active: 50
+      max-idle: 20
+      initial-size: 20
+      validation-query: select 1
+      stat-view-servlet:
+        allow:
+        deny:
+        login-username: admin
+        login-password: 123456
+        url-pattern: "/druid/*"
+        enabled: true
+      max-wait: 5000
+
+  mail:
+    host: smtp.qq.com
+    username: 601529188@qq.com
+    password: jwtsmxgijpibbfdh
+
+
+
+
+#mps 配置
+mybatis-plus:
+  global-config:
+    banner: true
+    db-config:
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations:
+    - classpath:mapper/*/*Mapper.xml
+
+#个人swagger相关配置
+swagger:
+  description: 微博后台接口管理系统
+  username: 黎建茹
+  phone: xxxxxxxxx
+  email: xxxxxxxxx
+  license: 微博后台接口管理系统
+  version: 1.0
+
+#shiro配置  静态资源文件要放行
+shiro:
+  hash-iterations: 2
+  anon-urls:
+  - /login.html*
+  - /sys/toLogin*
+  - /login/login*
+  logout-url: /login/logout*
+  authc-ulrs:
+  - /**
+  hash-algorithm-name: "md5"
+
+
