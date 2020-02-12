@@ -15,6 +15,7 @@ spring:
       initial-size: 20
       validation-query: select 1
       stat-view-servlet:
+
         allow:
         deny:
         login-username: admin
@@ -22,6 +23,16 @@ spring:
         url-pattern: "/druid/*"
         enabled: true
       max-wait: 5000
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+          enabled: true
+        wall:
+          config:
+            multi-statement-allow: true
+      filters: stat,wall,log4j
 
   mail:
     host: smtp.qq.com
