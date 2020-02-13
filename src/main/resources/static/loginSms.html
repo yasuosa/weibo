@@ -8,14 +8,20 @@
 <body>
 
 <form method="post" id="dlFrm" action="">
-    邮箱<input type="text" name="email"> <br>
-    <input type="button" id="sendSms"  onclick="this.src='/sms/getCode'"/> <br>
+    邮箱<input type="text" name="email" id="email"> <br>
+    <input type="button" id="sendSms" /> <br>
     验证码<input type="code" name="code">
     <input type="button" value="登陆" id="btn">
 </form>
 <script src="/resources/jquery-3.4.1.min.js"></script>
 <script>
     $(function () {
+
+        $("#sendSms").click(function () {
+            $.get("/sms/getCode",{sendemail:$("#email").val()},function (res) {
+                alert(res.msg);
+            })
+        });
 
         $("#btn").click(function () {
             $.post("/login/loginByEmail", $("#dlFrm").serialize(), function (res) {

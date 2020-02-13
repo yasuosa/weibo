@@ -13,13 +13,14 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="registertime" jdbcType="TIMESTAMP" property="registertime" />
+    <result column="registertime" jdbcType="DATE" property="registertime" />
     <result column="salt" jdbcType="VARCHAR" property="salt" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, userid, loginname, username, realname, age, sex, address, phone, email, registertime, 
-    salt, `password`
+    salt, `password`, imgurl
   </sql>
 </mapper>

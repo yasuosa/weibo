@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <input type="text" name="userid" id="userid">
+    <input  accept="image/*" id="imgFile"  type="file"  name="mf"/>
+    <input type="button" id="uploadIMG"  value="提交">
+</head>
+<body>
+<script src="/resources/jquery-3.4.1.min.js"></script>
+<script>
+
+    $("#uploadIMG").click(function (){
+        var imgFile = document.getElementById('imgFile').files[0]; //获取图片文件
+        var formData = new FormData();  // 创建form对象
+        formData.append("userid",$("#userid").val());
+        formData.append('mf', imgFile);  // 通过append向form对象添加数据// 如果还需要传替他参数的话
+        $.ajax({
+            url: '/file/uploadIcon', //请求的接口地址
+            type: 'POST',
+            cache: false, //上传文件不需要缓存
+            data: formData,
+            processData: false, // 不要去处理发送的数据
+            contentType: false, // 不要去设置Content-Type请求头
+            success: function(data){
+                console.log(data.value);
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+    });
+
+</script>
+</body>
+</html>

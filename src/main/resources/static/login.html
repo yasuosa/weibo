@@ -14,12 +14,17 @@
     <img src="/login/getCode" onclick="this.src='/login/getCode?'+new Date()">
     <input type="button" value="登陆" id="btn">
 </form>
+
+<img src="" id="icon">
 <script src="/resources/jquery-3.4.1.min.js"></script>
 <script>
     $(function () {
         $("#btn").click(function () {
             $.post("/login/login", $("#dlFrm").serialize(), function (res) {
-                alert(res.msg);
+                var data=res.data;
+                alert(res.data);
+
+                $("#icon").attr("src",'file/showImgByPath?path='+data.imgurl)
             })
         });
     });

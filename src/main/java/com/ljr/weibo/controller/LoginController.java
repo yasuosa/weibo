@@ -9,7 +9,7 @@ import com.ljr.weibo.common.Constant;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.User;
 import com.ljr.weibo.service.UserService;
-import com.ljr.weibo.utils.AccountUtils;
+import com.ljr.weibo.utils.SysUtils;
 import com.ljr.weibo.utils.WebUtils;
 import com.ljr.weibo.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 
 @RestController
@@ -50,10 +49,10 @@ public class LoginController {
         }
         String userPwd = user.getPassword();
         String salt = user.getSalt();
-        if (userPwd.equals(AccountUtils.getJoinSaltPwd(salt, password))) {
+        if (userPwd.equals(SysUtils.getJoinSaltPwd(salt, password))) {
             WebUtils.getSession().setAttribute("user", user);
             WebUtils.getSession().removeAttribute("code");
-            return ResultObj.LOGIN_SUCCESS;
+            return new ResultObj(Constant.CODE_TRUE,Constant.LOGIN_SUCCESS,user);
         } else {
             return ResultObj.LOGIN_FAIL;
         }
@@ -84,10 +83,10 @@ public class LoginController {
             }
             String userPwd = user.getPassword();
             String salt = user.getSalt();
-            if (userPwd.equals(AccountUtils.getJoinSaltPwd(salt, password))) {
+            if (userPwd.equals(SysUtils.getJoinSaltPwd(salt, password))) {
                 WebUtils.getSession().setAttribute("user", user);
                 WebUtils.getSession().removeAttribute("code");
-                return ResultObj.LOGIN_SUCCESS;
+                return new ResultObj(Constant.CODE_TRUE,Constant.LOGIN_SUCCESS,user);
             } else {
                 return ResultObj.LOGIN_FAIL;
             }
@@ -109,9 +108,10 @@ public class LoginController {
         try {
             String salt = IdUtil.simpleUUID().toUpperCase();
             userVo.setSalt(salt);
-            userVo.setPassword(AccountUtils.getJoinSaltPwd(salt, userVo.getPassword()));
+            userVo.setImgurl(Constant.DEFAULT_ICON);
+            userVo.setPassword(SysUtils.getJoinSaltPwd(salt, userVo.getPassword()));
             userVo.setRegistertime(new Date());
-            userVo.setUserid(AccountUtils.getUserId());
+            userVo.setUserid(SysUtils.getUserId());
             userService.save(userVo);
             return ResultObj.REGISTER_SUCCESS;
         } catch (Exception e) {
@@ -157,10 +157,11 @@ public class LoginController {
                     //自动注册
                     user=new User();
                     user.setLoginname(email);
-                    user.setUserid(AccountUtils.getUserId());
+                    user.setUserid(SysUtils.getUserId());
+                    user.setImgurl(Constant.DEFAULT_ICON);
                     String salt = IdUtil.simpleUUID().toUpperCase();
                     user.setSalt(salt);
-                    user.setPassword(AccountUtils.getJoinSaltPwd(
+                    user.setPassword(SysUtils.getJoinSaltPwd(
                             salt,
                             email+ Constant.DEFAULT_PASSWORD_SUTFF
                     ));
@@ -169,14 +170,14 @@ public class LoginController {
                     try {
                         userService.save(user);
                         WebUtils.getSession().removeAttribute("smsCode");
-                        return ResultObj.LOGIN_SUCCESS;
+                        return new ResultObj(Constant.CODE_TRUE,Constant.LOGIN_SUCCESS,user);
                     } catch (Exception e){
                         e.printStackTrace();
                         return ResultObj.ERROR;
                     }
                 }else {
                     WebUtils.getSession().setAttribute("user",user);
-                    return ResultObj.LOGIN_SUCCESS;
+                    return new ResultObj(Constant.CODE_TRUE,Constant.LOGIN_SUCCESS,user);
                 }
             }else {
                 return ResultObj.LOGIN_FAIL_CODE_WRONG;

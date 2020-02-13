@@ -27,4 +27,17 @@ public interface Constant {
 
 
     String ERROR = "错误错误!";
+    String INSERT_SUCCESS ="发布成功" ;
+    String INSERT_FAIL ="发布失败" ;
+    Integer DEFAULT_LIKENUM = 0;
+    Integer DEFAULT_REPEATNUM = 0;
+
+    /**文章类型*/
+    String NEW_TYPE_MYSELF = "myself";
+    String NEW_TYPE_REPEAT= "repeat";
+    String DELETE_SUCCESS = "删除成功";
+    String DELETE_FAIL= "删除失败";
+
+    //默认头像
+    String DEFAULT_ICON = "/default/default.jpg";
 }

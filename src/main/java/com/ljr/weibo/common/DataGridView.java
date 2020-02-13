@@ -15,4 +15,10 @@ public class DataGridView {
     private Integer code;
     private String msg;
     private Object data;
+
+    public DataGridView(Object data) {
+        this.code=Constant.CODE_TRUE;
+        this.msg="";
+        this.data = data;
+    }
 }

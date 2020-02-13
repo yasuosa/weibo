@@ -38,7 +38,10 @@ spring:
     host: smtp.qq.com
     username: 601529188@qq.com
     password: jwtsmxgijpibbfdh
-
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson:
+    date-format: java.text.SimpleDateFormat
 
 
 
@@ -51,7 +54,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations:
-    - classpath:mapper/*/*Mapper.xml
+    - classpath:mapper/**/*Mapper.xml
 
 #个人swagger相关配置
 swagger:
