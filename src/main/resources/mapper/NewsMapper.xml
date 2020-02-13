@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljr.weibo.mapper.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.ljr.weibo.domain.News">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="newsid" jdbcType="INTEGER" property="newsid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="newstime" jdbcType="TIMESTAMP" property="newstime" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="likenum" jdbcType="INTEGER" property="likenum" />
+    <result column="repeatnum" jdbcType="INTEGER" property="repeatnum" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, newsid, content, newstime, author, userid, likenum, repeatnum, `type`
+  </sql>
+    <select id="queryListImgByNid" resultType="string">
+      select imgurl from sys_news_img
+      where newsid=#{nid}
+    </select>
+
+  <insert id="insertImgAndNid"  >
+    insert into  sys_news_img(newsid, imgurl)
+    values
+    <foreach collection="imgs" separator="," item="img">
+      ( #{nid} ,
+      #{img}
+      )
+    </foreach>
+  </insert>
+  <delete id="deleteImgAndNid">
+    delete from sys_news_img
+    where newsid=#{newsid}
+  </delete>
+
+</mapper>
