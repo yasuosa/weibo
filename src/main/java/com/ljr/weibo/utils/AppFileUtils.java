@@ -108,4 +108,19 @@ public class AppFileUtils {
         System.out.println("AAAA"+imgs);
         return imgs;
     }
+
+    /**
+     * 删除前一天的所有temp图片
+     */
+    public static void removeAllTemp() {
+        File file=new File(UPLOAD_PATH_IMG,TimeUtils.getLastDay());
+        if(file.exists()){
+            List<String> list = FileUtil.listFileNames(file.getPath());
+            for (String path : list) {
+                if(path.endsWith("_temp")){
+                    FileUtil.del(new File(file.getPath(),path));
+                }
+            }
+        }
+    }
 }
