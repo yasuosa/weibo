@@ -52,11 +52,7 @@ public class FileController {
         try {
             mf.transferTo(file);
             //更改用户头像
-            User user=new User();
-            user.setImgurl(dirName+"/"+newName);
-            QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-            queryWrapper.eq("userid",userid);
-            userService.update(user,queryWrapper);
+            userService.updateUserIconByUid(userid,dirName+"/"+newName);
             map.put("value",dirName+"/"+newName);
         } catch (IOException e) {
             e.printStackTrace();

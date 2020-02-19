@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
+import lombok.ToString;
 
 @ApiModel(value = "com.ljr.weibo.domain.News")
 @Data
@@ -102,6 +103,10 @@ public class News {
     //评论
     @TableField(exist = false)
     private Integer commentnum;
+
+    //作者头像地址
+    @TableField(exist = false)
+    private String icon;
 
 
 }

@@ -23,4 +23,13 @@
     id, userid, loginname, username, realname, age, sex, address, phone, email, registertime, 
     salt, `password`, imgurl
   </sql>
+  <update id="updateUserIconByUid">
+    update sys_user set imgurl=#{icon}
+    where userid=#{uid}
+  </update>
+  <select id="findUserIconByUid" resultType="java.lang.String">
+    select imgurl from sys_user
+    where userid=#{uid}
+
+  </select>
 </mapper>

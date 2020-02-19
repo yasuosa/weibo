@@ -10,6 +10,7 @@ import com.ljr.weibo.domain.Comment;
 import com.ljr.weibo.domain.News;
 import com.ljr.weibo.service.CommentService;
 import com.ljr.weibo.service.NewsService;
+import com.ljr.weibo.service.UserService;
 import com.ljr.weibo.utils.AppFileUtils;
 import com.ljr.weibo.utils.SysUtils;
 import com.ljr.weibo.vo.NewsVo;
@@ -36,6 +37,9 @@ public class NewsController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private UserService userService;
+
 
     /**
      * 文章列表的总查询
@@ -61,8 +65,11 @@ public class NewsController {
             commentQueryWrapper.eq("nid",newsVo.getNewsid());
             List<Comment> comments = commentService.list(commentQueryWrapper);
             news.setCommentnum(comments.size());
+            //头像地址
+            String icon = userService.findUserIconByUid(news.getUserid());
+            news.setIcon(icon);
         }
-        return new DataGridView(newsList);
+        return new DataGridView(page.getTotal(),newsList);
     }
 
 

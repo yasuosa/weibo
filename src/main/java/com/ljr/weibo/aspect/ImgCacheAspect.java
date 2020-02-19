@@ -20,18 +20,23 @@ import java.util.Map;
 @Aspect
 @EnableAspectJAutoProxy
 public class ImgCacheAspect {
-
+    private Map<String,Object> CACHE_CONTAINER= new HashMap<>();
     //日子输出
     private Log log= LogFactory.getLog(ImgCacheAspect.class.getSimpleName());
+
+
     //log前缀
     private static final String CACHE_IMG_PREFIX="img:";
 
-
-    private Map<String,Object> CACHE_CONTAINER= new HashMap<>();
-
+    //图片的切入点
     private static final String POINTCUT_IMG_LIST="execution(* com.ljr.weibo.service.impl.NewsServiceImpl.findImgsByNid(..))";
     private static final String POINTCUT_IMG_SAVE="execution(* com.ljr.weibo.service.impl.NewsServiceImpl.saveImgByNid(..))";
     private static final String POINTCUT_IMG_DELETE="execution(* com.ljr.weibo.service.impl.NewsServiceImpl.removeImgByNid(..))";
+
+    //头像的切入点
+    private static final String CACHE_ICON_PREFIX="icon:";
+    private static final String POINTCUT_ICON_SELECT="execution(* com.ljr.weibo.service.impl.UserServiceImpl.findUserIconByUid(..))";
+    private static final String POINTCUT_ICON_UPDATE="execution(* com.ljr.weibo.service.impl.UserServiceImpl.updateUserIconByUid(..))";
 
     /**
      * 查询对应文章nid下面的图片
@@ -79,4 +84,31 @@ public class ImgCacheAspect {
         return isSuccess;
     }
 
+
+
+    @Around(value = POINTCUT_ICON_SELECT)
+    public Object cacheIconSelect(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Integer uid = (Integer) proceedingJoinPoint.getArgs()[0];
+        String o = (String) CACHE_CONTAINER.get(CACHE_ICON_PREFIX + uid);
+        if(null== o){
+            String icon = (String) proceedingJoinPoint.proceed();
+            CACHE_CONTAINER.put(CACHE_ICON_PREFIX+uid,icon);
+            log.info("未从缓存里面找到图片，放入缓存------------>"+uid);
+            return icon;
+        }
+        log.info("从缓存里面找到图片------------>"+uid);
+        return o;
+    }
+
+    @Around(value = POINTCUT_ICON_UPDATE)
+    public Object cacheIconUpdate(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Boolean isSuccess = (Boolean) proceedingJoinPoint.proceed();
+        if(isSuccess){
+           Integer uid= (Integer) proceedingJoinPoint.getArgs()[0];
+            String icon= (String) proceedingJoinPoint.getArgs()[1];
+            CACHE_CONTAINER.put(CACHE_ICON_PREFIX+uid,icon);
+            log.info("头像缓存跟新------------>"+uid);
+        }
+        return isSuccess;
+    }
 }
