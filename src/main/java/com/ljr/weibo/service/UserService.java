@@ -12,7 +12,7 @@ public interface UserService extends IService<User> {
      * @param iconPath
      * @return
      */
-    boolean updateUserIconByUid(Integer uid,String iconPath);
+    String updateUserIconByUid(Integer uid,String iconPath);
 
 
     /**

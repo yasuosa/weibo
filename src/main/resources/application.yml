@@ -42,7 +42,16 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   jackson:
     date-format: java.text.SimpleDateFormat
-
+#redis
+  redis:
+    host: 47.101.138.164
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 10
+        min-idle: 5
+        max-active: 100
+    timeout:
 
 
 #mps 配置

@@ -18,7 +18,7 @@ public interface NewsService extends IService<News> {
    List<String> findImgsByNid(Integer nid);
 
 
-    boolean saveImgByNid(Integer nid,List<String> imgUrls);
+   List<String> saveImgByNid(Integer nid,List<String> imgUrls);
 
 
     boolean removeImgByNid(Integer newsid);

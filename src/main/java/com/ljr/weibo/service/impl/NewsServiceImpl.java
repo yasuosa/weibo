@@ -1,5 +1,9 @@
 package com.ljr.weibo.service.impl;
 
+import com.baomidou.mybatisplus.extension.api.Assert;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,24 +20,31 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
 
 
     @Override
+    @Cacheable(cacheNames = "img:news:",key = "#nid", condition = "#relust.size()>0")
     public List<String> findImgsByNid(Integer nid) {
         NewsMapper newsMapper = getBaseMapper();
-        return newsMapper.queryListImgByNid(nid);
+        List<String> imgs = newsMapper.queryListImgByNid(nid);
+        if(imgs.size()>0){
+            return imgs;
+        }
+        return null;
     }
 
     @Override
-    public boolean saveImgByNid(Integer nid, List<String> imgUrls) {
+    @CachePut(cacheNames = "img:news:",key = "#nid",condition = "#imgUrls.size()>0")
+    public List<String> saveImgByNid(Integer nid, List<String> imgUrls) {
         NewsMapper newsMapper = getBaseMapper();
         try {
             newsMapper.insertImgAndNid(nid, imgUrls);
-            return true;
+            return imgUrls;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
     @Override
+    @CacheEvict(cacheNames = "img:news:",key = "#newsid")
     public boolean removeImgByNid(Integer newsid) {
         NewsMapper newsMapper = getBaseMapper();
         return newsMapper.deleteImgAndNid(newsid);

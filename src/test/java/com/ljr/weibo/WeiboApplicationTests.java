@@ -21,6 +21,8 @@ class WeiboApplicationTests {
     @Autowired
     private NewsService newsService;
 
+
+
     List<String> imgs=new ArrayList<>();
     @Test
     void contextLoads() {

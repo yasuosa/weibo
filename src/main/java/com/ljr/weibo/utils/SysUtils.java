@@ -29,11 +29,10 @@ public class SysUtils {
      */
     public static Integer getUserId(){
         Calendar cal = Calendar.getInstance();
-        int day = cal.get(Calendar.DATE);
         int month = cal.get(Calendar.MONTH) + 1;
         int intminutes=cal.get(Calendar.MINUTE);//分
         int intseconds=cal.get(Calendar.SECOND);
-        String uuid=""+day+intseconds+month+intminutes+intseconds+ RandomUtil.randomInt(0,9);
+        String uuid=""+intseconds+month+intminutes+intseconds+ RandomUtil.randomInt(0,9);
         return Integer.parseInt(uuid);
     }
 
@@ -43,11 +42,10 @@ public class SysUtils {
      */
     public static Integer getNewsId(){
         Calendar cal = Calendar.getInstance();
-        int day = cal.get(Calendar.DATE);
         int month = cal.get(Calendar.MONTH) + 1;
         int intminutes=cal.get(Calendar.MINUTE);//分
         int intseconds=cal.get(Calendar.SECOND);
-        String uuid=""+day+intseconds+month+intminutes+ RandomUtil.randomInt(0,9)+intseconds;
+        String uuid=""+intseconds+month+intminutes+ RandomUtil.randomInt(0,9)+intseconds;
         return Integer.parseInt(uuid);
     }
 

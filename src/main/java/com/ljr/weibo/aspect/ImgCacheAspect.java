@@ -13,12 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+//@Component
+//@Aspect
+//@EnableAspectJAutoProxy
+
 /**
- * 没用redis 加用切面做缓存
+ * 采用redis 此方法废弃
  */
-@Component
-@Aspect
-@EnableAspectJAutoProxy
+@Deprecated
 public class ImgCacheAspect {
     private Map<String,Object> CACHE_CONTAINER= new HashMap<>();
     //日子输出
