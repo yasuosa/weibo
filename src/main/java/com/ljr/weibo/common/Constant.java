@@ -40,4 +40,12 @@ public interface Constant {
 
     //默认头像
     String DEFAULT_ICON = "/default/default.jpg";
+
+
+    /**人际关系图 */
+    String RELATIONSHIP_IDOL = "idol";
+    String RELATIONSHIP_FAN = "fan";
+
+    /**验证码的key*/
+    String REDIS_CODE_KEY = "login:code:";
 }

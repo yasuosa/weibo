@@ -7,25 +7,34 @@ import lombok.Data;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.IRedisManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 
 
-//@Configuration  //先别开 最后再开 方便测试
+@Configuration
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @ConditionalOnClass(value = { SecurityManager.class })
 @ConfigurationProperties(prefix = "shiro")
@@ -41,6 +50,9 @@ public class ShiroAutoConfiguration {
 	private String[] anonUrls;
 	private String logOutUrl;
 	private String[] authcUlrs;
+
+	@Autowired
+	private RedisProperties redisProperties;
 
 	/**
 	 * 声明凭证匹配器
@@ -68,10 +80,12 @@ public class ShiroAutoConfiguration {
 	 * 配置SecurityManager
 	 */
 	@Bean("securityManager")
-	public SecurityManager securityManager(UserRealm userRealm) {
+	public SecurityManager securityManager(DefaultWebSessionManager defaultWebSessionManager, SessionDAO sessionDAO, UserRealm userRealm) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 注入userRealm
+		defaultWebSessionManager.setSessionDAO(sessionDAO);
 		securityManager.setRealm(userRealm);
+		securityManager.setSessionManager(defaultWebSessionManager);
 		return securityManager;
 	}
 
@@ -147,4 +161,27 @@ public class ShiroAutoConfiguration {
 	/* 加入注解的使用，不加入这个注解不生效--结束 */
 
 
+	@Bean
+	public SessionDAO redisSessionDAO(IRedisManager redisManager) {
+		RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+		redisSessionDAO.setRedisManager(redisManager); //操作那个redis
+		redisSessionDAO.setExpire(24*3600); // 用户的登录信息保存多久？ 7 天
+		//       redisSessionDAO.setKeySerializer(keySerializer); jdk
+		//       redisSessionDAO.setValueSerializer(valueSerializer);jdk
+		return redisSessionDAO ;
+	}
+
+
+
+	@Bean
+	public IRedisManager redisManager() {
+		RedisManager redisManager = new RedisManager();
+		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+		jedisPoolConfig.setMaxTotal(redisProperties.getJedis().getPool().getMaxActive()); // 链接池的最量 20 ，并发特别大时，连接池的数据可以最大增加20个
+		jedisPoolConfig.setMaxIdle(redisProperties.getJedis().getPool().getMaxIdle());// 连接池的最大剩余量15个 ：并发不大，池里面的对象用不上，里面对象太多了。浪费空间
+		jedisPoolConfig.setMinIdle(redisProperties.getJedis().getPool().getMinIdle()); // 连接池初始就有10 个
+		JedisPool jedisPool = new JedisPool(jedisPoolConfig, redisProperties.getHost(), redisProperties.getPort(),2000,redisProperties.getPassword());
+		redisManager.setJedisPool(jedisPool );
+		return redisManager ;
+	}
 }

@@ -2,6 +2,9 @@ package com.ljr.weibo.utils;
 
 import ch.qos.logback.core.util.TimeUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.ljr.weibo.common.ActiviUser;
+import com.ljr.weibo.domain.User;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.util.ByteSource;
 
@@ -47,6 +50,23 @@ public class SysUtils {
         int intseconds=cal.get(Calendar.SECOND);
         String uuid=""+intseconds+month+intminutes+ RandomUtil.randomInt(0,9)+intseconds;
         return Integer.parseInt(uuid);
+    }
+
+
+    /**
+     * 获取ActiviUser
+     */
+    public static ActiviUser getActiviUser(){
+        return (ActiviUser) SecurityUtils.getSubject().getPrincipal();
+    }
+
+
+    /**
+     * 得到session里面的user
+     * @return
+     */
+    public static User getUser(){
+        return getActiviUser().getUser();
     }
 
 

@@ -1,7 +1,10 @@
 package com.ljr.weibo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.domain.User;
+import com.ljr.weibo.vo.BaseVo;
+import com.ljr.weibo.vo.NewsVo;
 
 public interface UserService extends IService<User> {
 

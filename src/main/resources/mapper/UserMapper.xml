@@ -32,4 +32,8 @@
     where userid=#{uid}
 
   </select>
+  <select id="queryOtherUserByUidAndType" resultType="java.lang.Integer">
+      select aid from sys_relationship
+      where  uid=#{id}  and type=#{type}
+  </select>
 </mapper>

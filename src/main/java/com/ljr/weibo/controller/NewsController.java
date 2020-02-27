@@ -13,8 +13,10 @@ import com.ljr.weibo.service.NewsService;
 import com.ljr.weibo.service.UserService;
 import com.ljr.weibo.utils.AppFileUtils;
 import com.ljr.weibo.utils.SysUtils;
+import com.ljr.weibo.vo.BaseVo;
 import com.ljr.weibo.vo.NewsVo;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,53 +51,46 @@ public class NewsController {
     @GetMapping("loadAllNews")
     @ApiOperation(consumes = "文章列表的总查询", value = "文章列表的总查询")
     public DataGridView loadAllNews(NewsVo newsVo){
-        IPage<News> page=new Page<>(newsVo.getPage(),newsVo.getLimit());
-        QueryWrapper<News> queryWrapper=new QueryWrapper<>();
-        //动态查询 关注对象的文章
-        queryWrapper.in(newsVo.getFocusIds()!=null,"userid",newsVo.getFocusIds());
-        queryWrapper.eq(StringUtils.isNotBlank(newsVo.getType()),"type",newsVo.getType());
-        queryWrapper.orderByDesc("newstime");
-        newsService.page(page,queryWrapper);
-        //分页
-        List<News> newsList = page.getRecords();
-        QueryWrapper<Comment> commentQueryWrapper=new QueryWrapper<>();
-        //查询文章对应的图片地址  //查询文章对应的评论数
-        for (News news : newsList) {
-            news.setImgUrls( newsService.findImgsByNid(news.getNewsid()));
-            commentQueryWrapper.eq("nid",newsVo.getNewsid());
-            List<Comment> comments = commentService.list(commentQueryWrapper);
-            news.setCommentnum(comments.size());
-            //头像地址
-            String icon = userService.findUserIconByUid(news.getUserid());
-            news.setIcon(icon);
-        }
-        return new DataGridView(page.getTotal(),newsList);
+        return  newsService.loadAllNews(newsVo);
     }
+
+    /**
+     * 查询关注的文章
+     * @param userid
+
+     * @return
+     */
+    @GetMapping("loadAllNewsByFocus")
+    @ApiOperation(consumes = "文章列表的总查询", value = "文章列表的总查询")
+    public DataGridView loadAllNewsByFocus(Integer userid, BaseVo pageVo){
+        return newsService.loadAllNewsByFocus(userid,pageVo);
+    }
+
 
 
     /**
      * 文章添加
-     * @param newsVo
+     * @param news
      * @return
      */
     @PostMapping("addNews")
     @ApiOperation(consumes = "文章添加", value = "文章添加")
-    public ResultObj addNews(NewsVo newsVo){
-        newsVo.setNewstime(new Date());
+    public ResultObj addNews(News news){
+        news.setNewstime(new Date());
         //设置初始点赞
-        newsVo.setLikenum(Constant.DEFAULT_LIKENUM);
+        news.setLikenum(Constant.DEFAULT_LIKENUM);
         //设置初始转发
-        newsVo.setRepeatnum(Constant.DEFAULT_REPEATNUM);
+        news.setRepeatnum(Constant.DEFAULT_REPEATNUM);
         //设置文章唯一id
-        if(newsVo.getType().equals(Constant.NEW_TYPE_MYSELF)) {
-            newsVo.setNewsid(SysUtils.getNewsId());
+        if(news.getType().equals(Constant.NEW_TYPE_MYSELF)) {
+            news.setNewsid(SysUtils.getNewsId());
         }
         try {
-            newsService.save(newsVo);
-            List<String> imgUrls = newsVo.getImgUrls();
+            newsService.save(news);
+            List<String> imgUrls = news.getImgUrls();
             //更改后缀名
             if(null!=imgUrls && imgUrls.size()>0) {
-                newsService.saveImgByNid(newsVo.getNewsid(), AppFileUtils.renameFile(imgUrls));
+                newsService.saveImgByNid(news.getNewsid(), AppFileUtils.renameFile(imgUrls));
             }
             return ResultObj.INSERT_SUCCESS;
         } catch (Exception e) {
@@ -107,33 +102,33 @@ public class NewsController {
 
     /**
      * 删除文章
-     * @param newsVo
+     * @param news
      * @return
      */
     @PostMapping("deleteNews")
     @ApiOperation(consumes = "删除文章", value = "删除文章")
-    public ResultObj deleteNews(NewsVo newsVo){
-        String type = newsVo.getType();
+    public ResultObj deleteNews(News news){
+        String type = news.getType();
         //判断这篇文章是不是作者自己写的
         try {
             if(StringUtils.isNotEmpty(type) && Constant.NEW_TYPE_MYSELF.equals(type)){
                 //是的话 有关所有的文章全部删除
                 QueryWrapper<News> queryWrapper=new QueryWrapper<>();
-                queryWrapper.eq("newsid",newsVo.getNewsid());
+                queryWrapper.eq("newsid",news.getNewsid());
                 //删除 这篇文章有所有关内容 转发
                 newsService.remove(queryWrapper);
 
                 QueryWrapper<Comment> commentQueryWrapper=new QueryWrapper<>();
-                commentQueryWrapper.eq("nid",newsVo.getNewsid());
+                commentQueryWrapper.eq("nid",news.getNewsid());
                 //删除评论
                 commentService.remove(commentQueryWrapper);
                 //删除图片
                 //从缓存中找到图片
-                List<String> imgs = newsService.findImgsByNid(newsVo.getNewsid());
-                newsService.removeImgByNid(newsVo.getNewsid());
+                List<String> imgs = newsService.findImgsByNid(news.getNewsid());
+                newsService.removeImgByNid(news.getNewsid());
                 AppFileUtils.removeFile(imgs);
             }else {
-                newsService.removeById(newsVo.getId());
+                newsService.removeById(news.getId());
             }
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {

@@ -99,3 +99,9 @@
                     <artifactId>fastdfs-client</artifactId>
                     <version>1.26.7</version>
                 </dependency>
+
+                <dependency>
+                    <groupId>org.crazycake</groupId>
+                    <artifactId>shiro-redis</artifactId>
+                    <version>3.2.3</version>
+                </dependency>

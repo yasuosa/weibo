@@ -45,7 +45,7 @@ spring:
 #redis
   redis:
     host: 47.101.138.164
-    port: 6379
+    port: 4399
     jedis:
       pool:
         max-idle: 10
@@ -78,12 +78,9 @@ swagger:
 shiro:
   hash-iterations: 2
   anon-urls:
-  - /login.html*
-  - /sys/toLogin*
-  - /login/login*
-  logout-url: /login/logout*
-  authc-ulrs:
   - /**
+  authc-ulrs:
+#  - /**
   hash-algorithm-name: "md5"
 
 #fastdfs 配置
