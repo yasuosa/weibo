@@ -47,5 +47,10 @@ public interface Constant {
     String RELATIONSHIP_FAN = "fan";
 
     /**验证码的key*/
-    String REDIS_CODE_KEY = "login:code:";
+    String LOGIN_REDIS_CODE_KEY = "login:code:";
+    String LOGIN_EMAIL_REDIS_CODE_KEY = "login:email:code:";
+
+    /**验证码的有效时间*/
+    Long IMG_CODE_TIME =  1L; //图像
+    Long EMAIL_CODE_TIME =  15L; //邮箱
 }

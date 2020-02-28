@@ -38,6 +38,8 @@ spring:
     host: smtp.qq.com
     username: 601529188@qq.com
     password: jwtsmxgijpibbfdh
+
+
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
   jackson:

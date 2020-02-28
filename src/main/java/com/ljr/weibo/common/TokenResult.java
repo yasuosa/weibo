@@ -19,4 +19,12 @@ public class TokenResult {
 
     //token嘛
     private String token;
+
+    public TokenResult(Integer code, String msg, String token) {
+        this.code = code;
+        this.msg = msg;
+        this.token = token;
+    }
+
+    private Object data;
 }

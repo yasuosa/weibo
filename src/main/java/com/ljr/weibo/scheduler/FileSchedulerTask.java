@@ -7,7 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class FileSchedulerTask {
 
     private Log log = LogFactory.getLog(FileSchedulerTask.class.getSimpleName());

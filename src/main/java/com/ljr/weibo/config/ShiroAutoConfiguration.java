@@ -2,11 +2,13 @@ package com.ljr.weibo.config;
 
 
 
+import com.ljr.weibo.realm.EmailRealm;
 import com.ljr.weibo.realm.UserRealm;
 import lombok.Data;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -30,7 +32,9 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.servlet.Filter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -77,14 +81,26 @@ public class ShiroAutoConfiguration {
 	}
 
 	/**
+	 * 声明List<Realm>
+	 */
+	@Bean("realms")
+	public List<Realm> getListRealm(UserRealm userRealm, EmailRealm emailRealm) {
+		List<Realm> realms=new ArrayList<>();
+		realms.add(userRealm);
+		realms.add(emailRealm);
+		return realms;
+	}
+
+
+	/**
 	 * 配置SecurityManager
 	 */
 	@Bean("securityManager")
-	public SecurityManager securityManager(DefaultWebSessionManager defaultWebSessionManager, SessionDAO sessionDAO, UserRealm userRealm) {
+	public SecurityManager securityManager(DefaultWebSessionManager defaultWebSessionManager, SessionDAO sessionDAO,List<Realm> realms) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 注入userRealm
 		defaultWebSessionManager.setSessionDAO(sessionDAO);
-		securityManager.setRealm(userRealm);
+		securityManager.setRealms(realms);
 		securityManager.setSessionManager(defaultWebSessionManager);
 		return securityManager;
 	}
