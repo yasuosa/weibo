@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ljr.weibo.common.AuthorRepeat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -108,5 +111,13 @@ public class News {
     @TableField(exist = false)
     private String icon;
 
+
+    //点赞
+    @TableField(exist = false)
+    private Boolean isLike=false;
+
+    //层级转发
+    @TableField(exist = false)
+    private List<AuthorRepeat>repeats=new ArrayList<>();
 
 }

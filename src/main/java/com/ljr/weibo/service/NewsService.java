@@ -1,6 +1,7 @@
 package com.ljr.weibo.service;
 
 import com.ljr.weibo.common.DataGridView;
+import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.News;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ljr.weibo.vo.BaseVo;
@@ -9,13 +10,6 @@ import com.ljr.weibo.vo.NewsVo;
 import java.util.List;
 
 public interface NewsService extends IService<News> {
-
-    /**
-     * 查询所有文章
-     * @param newsVo
-     * @return
-     */
-    DataGridView loadAllNews(NewsVo newsVo);
 
 
     /**
@@ -32,10 +26,9 @@ public interface NewsService extends IService<News> {
     boolean removeImgByNid(Integer newsid);
 
 
-    /**
-     * 关注文章总查询
-     * @return
-     */
-    DataGridView loadAllNewsByFocus(Integer userid, BaseVo pageVo);
+    DataGridView loadNews(NewsVo newsVo);
+
+
+    ResultObj likeNews(Integer id);
 }
 

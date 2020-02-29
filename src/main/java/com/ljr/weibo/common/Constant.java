@@ -53,4 +53,12 @@ public interface Constant {
     /**验证码的有效时间*/
     Long IMG_CODE_TIME =  1L; //图像
     Long EMAIL_CODE_TIME =  15L; //邮箱
+
+    /**查询的类型**/
+   String  SELECT_TYPE_ALL = "ALL";
+   String  SELECT_TYPE_MY = "MY";
+   String  SELECT_TYPE_MY_FOCUS= "FOCUS";
+
+    /**发布的顶级者的类型**/
+    Integer AUTHOR_REPEAT_TOP = 1;
 }

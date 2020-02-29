@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div id="content">
+
+    </div>
+</head>
+<body>
+
+<script src="/resources/jquery-3.4.1.min.js"></script>
+<script>
+    $.get("/news/loadAllNews?page=1&limit=10",function (res) {
+        if(res.code==200){
+            var data=res.data;
+            $.each(data,function (index,item) {
+                console.log(item.author.name)
+            })
+        }
+    })
+</script>
+</body>
+</html>

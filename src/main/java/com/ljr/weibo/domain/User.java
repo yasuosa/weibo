@@ -9,11 +9,16 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @ApiModel(value = "com.ljr.weibo.domain.User")
 @Data
 @TableName(value = "sys_user")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User  implements Serializable {
     /**
      * 用户id
@@ -136,4 +141,22 @@ public class User  implements Serializable {
     public static final String COL_PASSWORD = "password";
 
     public static final String COL_IMGURL = "imgurl";
+
+    //注册参数
+    public User(String loginname, String password) {
+        this.loginname = loginname;
+        this.password = password;
+    }
+
+    public User(String loginname, String username, String realname, Integer age, Integer sex, String address, String phone, String email, String password) {
+        this.loginname = loginname;
+        this.username = username;
+        this.realname = realname;
+        this.age = age;
+        this.sex = sex;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+    }
 }

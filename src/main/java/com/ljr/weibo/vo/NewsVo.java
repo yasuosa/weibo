@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class NewsVo extends BaseVo{
     //关注对象的id
     @ApiModelProperty(value = "关注对象的id")
-    private Integer[] focusIds;
+    private String selectType="all";
 }

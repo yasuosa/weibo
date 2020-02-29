@@ -113,19 +113,7 @@ public class LoginController {
     @PostMapping("toRegister")
     @ApiOperation(consumes = "用户账号密码注册", value = "用户账号密码注册")
     public ResultObj toRegister(UserVo userVo) {
-        try {
-            String salt = IdUtil.simpleUUID().toUpperCase();
-            userVo.setSalt(salt);
-            userVo.setImgurl(Constant.DEFAULT_ICON);
-            userVo.setPassword(SysUtils.getJoinSaltPwd(salt, userVo.getPassword()));
-            userVo.setRegistertime(new Date());
-            userVo.setUserid(SysUtils.getUserId());
-            userService.save(userVo);
-            return ResultObj.REGISTER_SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultObj.REGISTER_FAIL;
-        }
+        return userService.saveUser(userVo);
     }
 
     /**
