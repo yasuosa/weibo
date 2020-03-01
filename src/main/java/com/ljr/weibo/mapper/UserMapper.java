@@ -28,4 +28,7 @@ public interface UserMapper extends BaseMapper<User> {
     void deleteRelationship(@Param("uid") Integer userid,@Param("aid") Integer likeUserId, @Param("type") String relationshipIdol);
 
     Integer queryRelationship(@Param("uid") Integer userid,@Param("aid") Integer likeUserId, @Param("type") String relationshipIdol);
+
+    List<Integer> queryAimIdByUid(@Param("uid") Integer userid,@Param("type") String type);
+
 }

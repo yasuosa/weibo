@@ -108,6 +108,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    @Override
+    public DataGridView showFans() {
+        List<Integer> fanids=userMapper.queryAimIdByUid(SysUtils.getUser().getUserid(),Constant.RELATIONSHIP_FAN);
+        if(null==fanids || fanids.size()==0){
+            return new DataGridView(-1,"暂无粉丝！多发点微博试试",null,null);
+        }
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.in("userid",fanids);
+        List<User> users = userMapper.selectList(queryWrapper);
+        return new DataGridView(200,"查询成功",Long.valueOf(users.size()),users);
+    }
+
+    @Override
+    public DataGridView showIdol() {
+        List<Integer> iodlids=userMapper.queryAimIdByUid(SysUtils.getUser().getUserid(),Constant.RELATIONSHIP_IDOL);
+        if(null==iodlids || iodlids.size()==0){
+            return new DataGridView(-1,"试试关注他人！",null,null);
+        }
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.in("userid",iodlids);
+        List<User> users = userMapper.selectList(queryWrapper);
+        return new DataGridView(200,"查询成功",Long.valueOf(users.size()),users);
+    }
+
 
 }
 

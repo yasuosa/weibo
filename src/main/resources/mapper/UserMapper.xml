@@ -54,4 +54,8 @@
       where  uid=#{uid} and aid=#{aid} and type=#{type}
 
   </select>
+    <select id="queryAimIdByUid" resultType="java.lang.Integer">
+      select aid from sys_relationship
+      where uid=#{uid} and type=#{type}
+    </select>
 </mapper>

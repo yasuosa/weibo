@@ -7,7 +7,7 @@
     <result column="nid" jdbcType="INTEGER" property="nid" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="likenum" jdbcType="INTEGER" property="likenum" />
     <result column="nolikenum" jdbcType="INTEGER" property="nolikenum" />
   </resultMap>

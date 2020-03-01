@@ -18,6 +18,7 @@ import com.ljr.weibo.mapper.UserMapper;
 import com.ljr.weibo.utils.SysUtils;
 import com.ljr.weibo.vo.BaseVo;
 import com.ljr.weibo.vo.NewsVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -89,6 +90,10 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
 
         IPage<News> page=new Page<>(newsVo.getPage(),newsVo.getLimit());
         QueryWrapper<News> queryWrapper=new QueryWrapper<>();
+        //动态查询内容
+        String content = newsVo.getContent();
+        queryWrapper.like(StringUtils.isNotBlank(content),"content",content);
+
         queryWrapper.orderByDesc("newstime");
         Integer userid=null;
         if(SecurityUtils.getSubject().isAuthenticated()){

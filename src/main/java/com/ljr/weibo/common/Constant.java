@@ -30,6 +30,7 @@ public interface Constant {
     String INSERT_SUCCESS ="发布成功" ;
     String INSERT_FAIL ="发布失败" ;
     Integer DEFAULT_LIKENUM = 0;
+    Integer DEFAULT_UNLIKENUM = 0;
     Integer DEFAULT_REPEATNUM = 0;
 
     /**文章类型*/

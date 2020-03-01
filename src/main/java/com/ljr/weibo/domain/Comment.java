@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 @ApiModel(value="com.ljr.weibo.domain.Comment")
 @Data
 @TableName(value = "sys_news_comment")
@@ -30,7 +32,7 @@ public class Comment {
 
     @TableField(value = "time")
     @ApiModelProperty(value="null")
-    private String time;
+    private Date time;
 
     @TableField(value = "likenum")
     @ApiModelProperty(value="null")
@@ -51,4 +53,8 @@ public class Comment {
     public static final String COL_LIKENUM = "likenum";
 
     public static final String COL_NOLIKENUM = "nolikenum";
+
+
+    @TableField(exist = false)
+    private User user;
 }

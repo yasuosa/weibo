@@ -1,9 +1,11 @@
 package com.ljr.weibo.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -102,6 +104,7 @@ public class User  implements Serializable {
      */
     @TableField(value = "salt")
     @ApiModelProperty(value = "加密的salt")
+    @JsonIgnore
     private String salt;
 
     /**
@@ -109,6 +112,7 @@ public class User  implements Serializable {
      */
     @TableField(value = "password")
     @ApiModelProperty(value = "用户密码")
+    @JsonIgnore
     private String password;
 
     /**
@@ -159,4 +163,6 @@ public class User  implements Serializable {
         this.email = email;
         this.password = password;
     }
+
+
 }

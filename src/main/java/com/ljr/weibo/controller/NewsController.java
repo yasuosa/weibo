@@ -49,6 +49,22 @@ public class NewsController {
     }
 
 
+    /**
+     * 微博的搜索
+     * @return
+     */
+    @GetMapping("searchNews")
+    @ApiOperation(consumes = "微博的搜索", value = "微博的搜索")
+    public DataGridView searchNews(Integer page, Integer limit,String content){
+        NewsVo newsVo=new NewsVo();
+        newsVo.setPage(page);
+        newsVo.setLimit(limit);
+        newsVo.setContent(content);
+        newsVo.setSelectType(Constant.SELECT_TYPE_ALL);
+        return  newsService.loadNews(newsVo);
+    }
+
+
 
 
 

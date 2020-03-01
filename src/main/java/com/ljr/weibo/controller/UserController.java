@@ -8,6 +8,7 @@ import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.Comment;
 import com.ljr.weibo.domain.News;
+import com.ljr.weibo.domain.User;
 import com.ljr.weibo.service.CommentService;
 import com.ljr.weibo.service.NewsService;
 import com.ljr.weibo.service.UserService;
@@ -18,6 +19,7 @@ import com.ljr.weibo.vo.NewsVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -267,4 +269,67 @@ public class UserController {
             return  new ResultObj(-1,"移除粉丝失败");
         }
     }
+
+
+    /**
+     * 查询粉丝
+     */
+    @GetMapping("showFans")
+    @ApiOperation(consumes = "查询粉丝", value = "查询粉丝")
+    public DataGridView showFans(){
+        return userService.showFans();
+    }
+
+    /**
+     * 查询偶像
+     */
+    @GetMapping("showIdol")
+    @ApiOperation(consumes = "查询偶像", value = "查询偶像")
+    public DataGridView showIdol(){
+        return userService.showIdol();
+    }
+
+    /**
+     * 个人资料设置
+     */
+    @GetMapping("modifyUser")
+    @ApiOperation(consumes = "修改个人资料", value = "修改个人资料")
+    public ResultObj updateUser(User user){
+        try {
+            QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("userid",user.getUserid());
+            userService.update(user,queryWrapper);
+            return new ResultObj(200,"修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultObj(-1,"修改失败");
+        }
+    }
+
+    /**
+     * 查询个人资料
+     */
+    @GetMapping("showMe")
+    @ApiOperation(consumes = "查询个人资料", value = "查询个人资料")
+    public DataGridView updateUser(){
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("userid",SysUtils.getUser().getUserid());
+        User user = userService.getOne(queryWrapper);
+        return new DataGridView(200,"查询成功",null,user);
+    }
+
+
+    /**
+     * 查询他人资料
+     */
+    @GetMapping("showOtherUser")
+    @ApiOperation(consumes = "查询他人资料", value = "查询他人资料")
+    public DataGridView showOtherUser(Integer targetUserId){
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("userid",targetUserId);
+        User user = userService.getOne(queryWrapper);
+        return new DataGridView(200,"查询成功",null,user);
+    }
+
+
 }

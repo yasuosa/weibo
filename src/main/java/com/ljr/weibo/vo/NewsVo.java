@@ -16,4 +16,7 @@ public class NewsVo extends BaseVo{
     //关注对象的id
     @ApiModelProperty(value = "关注对象的id")
     private String selectType="all";
+
+    @ApiModelProperty(value = "搜索的微博的内容")
+    private String content;
 }

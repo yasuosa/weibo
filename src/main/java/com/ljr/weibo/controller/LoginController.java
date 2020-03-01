@@ -24,10 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
@@ -161,4 +158,16 @@ public class LoginController {
             return new TokenResult(-1,"验证码失效|请重新获取",null);
         }
     }
+
+
+    /**
+     * 退出登陆
+     */
+    @RequestMapping(value = "logout",method = RequestMethod.GET)
+    @ApiOperation(consumes = "退出登陆", value = "退出登陆")
+    public void  logout(){
+        SecurityUtils.getSubject().logout();
+    }
+
+
 }

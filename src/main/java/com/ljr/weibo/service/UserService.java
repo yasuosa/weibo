@@ -35,6 +35,12 @@ public interface UserService extends IService<User> {
 
     ResultObj saveUser(UserVo userVo);
 
+    DataGridView showFans();
+
+
+    DataGridView showIdol();
+
+
 }
 
 
