@@ -30,6 +30,7 @@ import javax.servlet.ServletOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Date;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("login")
@@ -110,6 +111,10 @@ public class LoginController {
     @PostMapping("toRegister")
     @ApiOperation(consumes = "用户账号密码注册", value = "用户账号密码注册")
     public ResultObj toRegister(UserVo userVo) {
+        String username = userVo.getUsername();
+        if(StringUtils.isBlank(username)){
+            userVo.setUsername(UUID.randomUUID()+"R");
+        }
         return userService.saveUser(userVo);
     }
 

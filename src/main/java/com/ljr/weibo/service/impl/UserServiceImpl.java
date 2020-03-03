@@ -1,10 +1,12 @@
 package com.ljr.weibo.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ljr.weibo.common.AuthorRepeat;
 import com.ljr.weibo.common.Constant;
 import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.common.ResultObj;
@@ -37,6 +39,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
 
+    @Autowired
+    private NewsMapper newsMapper;
 
 
     @Override
@@ -130,6 +134,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.in("userid",iodlids);
         List<User> users = userMapper.selectList(queryWrapper);
         return new DataGridView(200,"查询成功",Long.valueOf(users.size()),users);
+    }
+
+
+    @Override
+    public boolean update(User entity, Wrapper<User> updateWrapper) {
+        //根性author里面的json字符串
+        Integer userid=entity.getUserid();
+        List<News> news = newsMapper.selectList(null);
+        for (News n : news) {
+            String author = n.getAuthor();
+            List<AuthorRepeat> repeats= JSON.parseArray(author,AuthorRepeat.class);
+            for (AuthorRepeat repeat : repeats) {
+                if(repeat.getUserid().equals(userid)){
+                    repeat.setName(entity.getUsername());
+                }
+            }
+            n.setAuthor(JSON.toJSONString(repeats));
+            newsMapper.updateById(n);
+        }
+        return super.update(entity,updateWrapper);
     }
 
 

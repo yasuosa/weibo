@@ -105,3 +105,11 @@
                     <artifactId>shiro-redis</artifactId>
                     <version>3.2.3</version>
                 </dependency>
+
+
+                <!--解决swaggerapi依赖问题-->
+                <dependency>
+                   <groupId>javax.xml.bind</groupId>
+                   <artifactId>jaxb-api</artifactId>
+                   <version>2.3.0</version>
+                </dependency>

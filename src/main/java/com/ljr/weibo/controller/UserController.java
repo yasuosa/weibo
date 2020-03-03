@@ -45,6 +45,8 @@ public class UserController {
 
     @Autowired
     private CommentService commentService;
+    
+
 
     @RequestMapping(value = "repeatNews",method = RequestMethod.POST)
     @ApiOperation(consumes = "转发微博", value = "转发微博")

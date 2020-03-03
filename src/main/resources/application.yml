@@ -38,6 +38,10 @@ spring:
     host: smtp.qq.com
     username: 601529188@qq.com
     password: jwtsmxgijpibbfdh
+    port: 465
+
+
+
 
 
   mvc:
