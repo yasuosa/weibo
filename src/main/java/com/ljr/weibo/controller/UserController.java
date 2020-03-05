@@ -211,7 +211,7 @@ public class UserController {
      * @return
      */
     @GetMapping("loadAllNewsByFocus")
-    @ApiOperation(consumes = "查询关注的微博", value = "查询关注的微博")
+    @ApiOperation(consumes = "查询我的关注用户发布的微博", value = "查询我的关注用户发布的微博")
     public DataGridView loadAllNewsByFocus(Integer page, Integer limit){
         NewsVo newsVo=new NewsVo();
         newsVo.setPage(page);
@@ -324,6 +324,7 @@ public class UserController {
     /**
      * 查询他人资料
      */
+    @Deprecated
     @GetMapping("showOtherUser")
     @ApiOperation(consumes = "查询他人资料", value = "查询他人资料")
     public DataGridView showOtherUser(Integer targetUserId){
@@ -331,6 +332,28 @@ public class UserController {
         queryWrapper.eq("userid",targetUserId);
         User user = userService.getOne(queryWrapper);
         return new DataGridView(200,"查询成功",null,user);
+    }
+
+
+    /**
+     * 查询个人主页
+     */
+    @GetMapping("showMeIndex")
+    @ApiOperation(consumes = "查询个人主页", value = "查询个人主页")
+    public DataGridView showMeIndex(){
+        return userService.showMeIndex();
+    }
+
+    /**
+     * 查询他人主页
+     */
+    @GetMapping("showOthersIndex")
+    @ApiOperation(consumes = "查询他人主页", value = "查询他人主页")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="targetUserId",value="他人userid",required=true),
+    })
+    public DataGridView showOthersIndex(Integer targetUserId){
+        return userService.showOthersIndex(targetUserId);
     }
 
 

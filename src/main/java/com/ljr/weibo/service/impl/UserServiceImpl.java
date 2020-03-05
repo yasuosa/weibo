@@ -18,6 +18,7 @@ import com.ljr.weibo.utils.SysUtils;
 import com.ljr.weibo.vo.BaseVo;
 import com.ljr.weibo.vo.NewsVo;
 import com.ljr.weibo.vo.UserVo;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,7 +29,9 @@ import com.ljr.weibo.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -134,6 +137,48 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.in("userid",iodlids);
         List<User> users = userMapper.selectList(queryWrapper);
         return new DataGridView(200,"查询成功",Long.valueOf(users.size()),users);
+    }
+
+    @Override
+    public DataGridView showMeIndex() {
+        Map<String,Object> map=new HashMap<>();
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        Integer userid = SysUtils.getUser().getUserid();
+        queryWrapper.eq("userid", userid);
+        User user = userMapper.selectOne(queryWrapper);
+        map.put("userid",user.getUserid());
+        map.put("sex",user.getSex());
+        map.put("name",user.getUsername());
+        map.put("content",user.getContent());
+        Integer fansNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_FAN);
+        Integer idolsNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_IDOL);
+        map.put("fansNum",fansNum);
+        map.put("idolNum",idolsNum);
+        return new DataGridView(200,"查询成功",0L,map);
+    }
+
+    @Override
+    public DataGridView showOthersIndex(Integer uid) {
+        Map<String,Object> map=new HashMap<>();
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        Integer myId = SysUtils.getUser().getUserid();
+        queryWrapper.eq("userid", uid);
+        User user = userMapper.selectOne(queryWrapper);
+        map.put("userid",user.getUserid());
+        map.put("sex",user.getSex());
+        map.put("name",user.getUsername());
+        map.put("content",user.getContent());
+        Integer fansNum=userMapper.queryNumFansOrIdols(uid,Constant.RELATIONSHIP_FAN);
+        Integer idolsNum=userMapper.queryNumFansOrIdols(uid,Constant.RELATIONSHIP_IDOL);
+        map.put("fansNum",fansNum);
+        map.put("idolNum",idolsNum);
+        //判断是不是我的关注
+        Integer i1 = userMapper.queryRelationship(myId, uid, Constant.RELATIONSHIP_IDOL);
+        //判断是不是我的粉丝
+        Integer i2 = userMapper.queryRelationship(myId, uid, Constant.RELATIONSHIP_FAN);
+        map.put("isIdol",i1==0?false:true);
+        map.put("isFan",i2==0?false:true);
+        return new DataGridView(200,"查询成功",0L,map);
     }
 
 

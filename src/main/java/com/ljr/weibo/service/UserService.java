@@ -41,6 +41,11 @@ public interface UserService extends IService<User> {
     DataGridView showIdol();
 
 
+    DataGridView showMeIndex();
+
+
+    DataGridView showOthersIndex(Integer uid);
+
 }
 
 

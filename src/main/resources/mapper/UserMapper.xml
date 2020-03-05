@@ -17,6 +17,7 @@
     <result column="salt" jdbcType="VARCHAR" property="salt" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -58,4 +59,9 @@
       select aid from sys_relationship
       where uid=#{uid} and type=#{type}
     </select>
+
+  <select id="queryNumFansOrIdols" resultType="java.lang.Integer">
+    select count(1) from  sys_relationship
+    where uid=#{uid} and  type=#{type}
+  </select>
 </mapper>

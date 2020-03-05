@@ -122,6 +122,14 @@ public class User  implements Serializable {
     @ApiModelProperty(value = "用户图片地址 ")
     private String imgurl;
 
+
+    /**
+     * 用户简介
+     */
+    @TableField(value = "content")
+    @ApiModelProperty(value = "用户简介")
+    private String content;
+
     public static final String COL_LOGINNAME = "loginname";
 
     public static final String COL_USERNAME = "username";
