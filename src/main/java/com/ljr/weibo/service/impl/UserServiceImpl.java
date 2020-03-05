@@ -154,7 +154,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Integer idolsNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_IDOL);
         map.put("fansNum",fansNum);
         map.put("idolNum",idolsNum);
-        return new DataGridView(200,"查询成功",0L,map);
+        QueryWrapper<News> qw=new QueryWrapper<>();
+        qw.eq("userid",userid);
+        Integer count = newsMapper.selectCount(qw);
+        map.put("count",count);
+        return new DataGridView(200,"查询成功",null,map);
     }
 
     @Override
@@ -178,7 +182,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Integer i2 = userMapper.queryRelationship(myId, uid, Constant.RELATIONSHIP_FAN);
         map.put("isIdol",i1==0?false:true);
         map.put("isFan",i2==0?false:true);
-        return new DataGridView(200,"查询成功",0L,map);
+        QueryWrapper<News> qw=new QueryWrapper<>();
+        qw.eq("userid",uid);
+        Integer count = newsMapper.selectCount(qw);
+        map.put("count",count);
+        return new DataGridView(200,"查询成功",null,map);
     }
 
 
