@@ -154,6 +154,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Integer idolsNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_IDOL);
         map.put("fansNum",fansNum);
         map.put("idolNum",idolsNum);
+        map.put("icon",user.getImgurl());
         QueryWrapper<News> qw=new QueryWrapper<>();
         qw.eq("userid",userid);
         Integer count = newsMapper.selectCount(qw);
@@ -176,6 +177,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Integer idolsNum=userMapper.queryNumFansOrIdols(uid,Constant.RELATIONSHIP_IDOL);
         map.put("fansNum",fansNum);
         map.put("idolNum",idolsNum);
+        map.put("icon",user.getImgurl());
         //判断是不是我的关注
         Integer i1 = userMapper.queryRelationship(myId, uid, Constant.RELATIONSHIP_IDOL);
         //判断是不是我的粉丝
