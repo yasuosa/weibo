@@ -13,6 +13,7 @@ import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.Comment;
 import com.ljr.weibo.domain.News;
 import com.ljr.weibo.domain.User;
+import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.mapper.NewsMapper;
 import com.ljr.weibo.utils.SysUtils;
 import com.ljr.weibo.vo.BaseVo;
@@ -116,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public DataGridView showFans() {
+    public DataGridView showFans() throws UserIsNotException {
         List<Integer> fanids=userMapper.queryAimIdByUid(SysUtils.getUser().getUserid(),Constant.RELATIONSHIP_FAN);
         if(null==fanids || fanids.size()==0){
             return new DataGridView(-1,"暂无粉丝！多发点微博试试",null,null);
@@ -128,7 +129,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public DataGridView showIdol() {
+    public DataGridView showIdol() throws UserIsNotException {
         List<Integer> iodlids=userMapper.queryAimIdByUid(SysUtils.getUser().getUserid(),Constant.RELATIONSHIP_IDOL);
         if(null==iodlids || iodlids.size()==0){
             return new DataGridView(-1,"试试关注他人！",null,null);
@@ -140,7 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public DataGridView showMeIndex() {
+    public DataGridView showMeIndex() throws UserIsNotException {
         Map<String,Object> map=new HashMap<>();
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         Integer userid = SysUtils.getUser().getUserid();
@@ -163,7 +164,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public DataGridView showOthersIndex(Integer uid) {
+    public DataGridView showOthersIndex(Integer uid) throws UserIsNotException {
         Map<String,Object> map=new HashMap<>();
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         Integer myId = SysUtils.getUser().getUserid();

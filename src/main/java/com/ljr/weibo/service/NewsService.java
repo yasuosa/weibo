@@ -4,6 +4,7 @@ import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.News;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.vo.BaseVo;
 import com.ljr.weibo.vo.NewsVo;
 
@@ -26,9 +27,9 @@ public interface NewsService extends IService<News> {
     boolean removeImgByNid(Integer newsid);
 
 
-    DataGridView loadNews(NewsVo newsVo);
+    DataGridView loadNews(NewsVo newsVo) throws UserIsNotException;
 
 
-    ResultObj likeNews(Integer id);
+    ResultObj likeNews(Integer id) throws UserIsNotException;
 }
 

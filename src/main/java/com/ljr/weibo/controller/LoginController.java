@@ -10,6 +10,7 @@ import com.ljr.weibo.common.Constant;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.common.TokenResult;
 import com.ljr.weibo.domain.User;
+import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.service.UserService;
 import com.ljr.weibo.utils.SysUtils;
 import com.ljr.weibo.utils.WebUtils;
@@ -98,6 +99,9 @@ public class LoginController {
         } catch (AuthenticationException e) {
             e.printStackTrace();
             return new TokenResult(-1, "账户密码错误", null);
+        } catch (UserIsNotException e) {
+            e.printStackTrace();
+            return new TokenResult(-1, e.getMsg(), null);
         }
     }
 
@@ -161,6 +165,9 @@ public class LoginController {
         } catch(AuthenticationException e) {
             e.printStackTrace();
             return new TokenResult(-1,"验证码失效|请重新获取",null);
+        } catch (UserIsNotException e) {
+            e.printStackTrace();
+            return new TokenResult(-1, e.getMsg(), null);
         }
     }
 

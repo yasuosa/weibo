@@ -12,6 +12,7 @@ import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.Comment;
 import com.ljr.weibo.domain.UserLikeNews;
+import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.mapper.CommentMapper;
 import com.ljr.weibo.mapper.UserLikeNewsMapper;
 import com.ljr.weibo.mapper.UserMapper;
@@ -86,7 +87,7 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
     }
 
 
-    public DataGridView loadNews(NewsVo newsVo){
+    public DataGridView loadNews(NewsVo newsVo) throws UserIsNotException {
 
         IPage<News> page=new Page<>(newsVo.getPage(),newsVo.getLimit());
         QueryWrapper<News> queryWrapper=new QueryWrapper<>();
@@ -135,7 +136,7 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
     }
 
     @Override
-    public ResultObj likeNews(Integer id) {
+    public ResultObj likeNews(Integer id) throws UserIsNotException {
         News news =newsMapper.selectById(id);
         Integer userid = SysUtils.getUser().getUserid();
 

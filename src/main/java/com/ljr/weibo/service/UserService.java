@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.User;
+import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.vo.BaseVo;
 import com.ljr.weibo.vo.NewsVo;
 import com.ljr.weibo.vo.UserVo;
@@ -35,16 +36,16 @@ public interface UserService extends IService<User> {
 
     ResultObj saveUser(UserVo userVo);
 
-    DataGridView showFans();
+    DataGridView showFans() throws UserIsNotException;
 
 
-    DataGridView showIdol();
+    DataGridView showIdol() throws UserIsNotException;
 
 
-    DataGridView showMeIndex();
+    DataGridView showMeIndex() throws UserIsNotException;
 
 
-    DataGridView showOthersIndex(Integer uid);
+    DataGridView showOthersIndex(Integer uid) throws UserIsNotException;
 
 }
 

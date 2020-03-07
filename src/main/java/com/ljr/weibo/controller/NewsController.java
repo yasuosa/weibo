@@ -8,6 +8,7 @@ import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.Comment;
 import com.ljr.weibo.domain.News;
+import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.service.CommentService;
 import com.ljr.weibo.service.NewsService;
 import com.ljr.weibo.service.UserService;
@@ -40,7 +41,7 @@ public class NewsController {
      */
     @GetMapping("loadAllNews")
     @ApiOperation(consumes = "微博列表的总查询", value = "微博列表的总查询")
-    public DataGridView loadAllNews(Integer page, Integer limit){
+    public DataGridView loadAllNews(Integer page, Integer limit) throws UserIsNotException {
         NewsVo newsVo=new NewsVo();
         newsVo.setPage(page);
         newsVo.setLimit(limit);
@@ -55,7 +56,7 @@ public class NewsController {
      */
     @GetMapping("searchNews")
     @ApiOperation(consumes = "微博的搜索", value = "微博的搜索")
-    public DataGridView searchNews(Integer page, Integer limit,String content){
+    public DataGridView searchNews(Integer page, Integer limit,String content) throws UserIsNotException {
         NewsVo newsVo=new NewsVo();
         newsVo.setPage(page);
         newsVo.setLimit(limit);

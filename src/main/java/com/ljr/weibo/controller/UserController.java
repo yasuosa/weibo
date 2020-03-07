@@ -9,6 +9,7 @@ import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.Comment;
 import com.ljr.weibo.domain.News;
 import com.ljr.weibo.domain.User;
+import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.service.CommentService;
 import com.ljr.weibo.service.NewsService;
 import com.ljr.weibo.service.UserService;
@@ -111,7 +112,7 @@ public class UserController {
             @ApiImplicitParam(name="newsid",value="文章id",required=true),
             @ApiImplicitParam(name="type",value="文章类型(自己写的/转发)",required=true)
     })
-    public ResultObj deleteNews(Integer id,Integer userid,Integer newsid,String type){
+    public ResultObj deleteNews(Integer id,Integer userid,Integer newsid,String type) throws UserIsNotException {
         //判断这篇文章是不是作者自己写的
         Integer myId=SysUtils.getUser().getUserid();
         if(!userid.equals(myId)){
@@ -152,7 +153,7 @@ public class UserController {
      */
     @RequestMapping(value = "addNews",method = RequestMethod.POST)
     @ApiOperation(consumes = "微博发布接口", value = "微博发布接口")
-    public ResultObj addNews(String content,String[] imgs){
+    public ResultObj addNews(String content,String[] imgs) throws UserIsNotException {
         News news=new News();
         if(null !=imgs && imgs.length>0) {
             news.setImgUrls(Arrays.asList(imgs));
@@ -197,7 +198,7 @@ public class UserController {
      */
     @RequestMapping(value = "loadMyNews",method = RequestMethod.GET)
     @ApiOperation(consumes = "查询我自己的微博", value = "查询我自己的微博")
-    public DataGridView loadMyNews(Integer page, Integer limit){
+    public DataGridView loadMyNews(Integer page, Integer limit) throws UserIsNotException {
         NewsVo newsVo=new NewsVo();
         newsVo.setPage(page);
         newsVo.setLimit(limit);
@@ -212,7 +213,7 @@ public class UserController {
      */
     @GetMapping("loadAllNewsByFocus")
     @ApiOperation(consumes = "查询我的关注用户发布的微博", value = "查询我的关注用户发布的微博")
-    public DataGridView loadAllNewsByFocus(Integer page, Integer limit){
+    public DataGridView loadAllNewsByFocus(Integer page, Integer limit) throws UserIsNotException {
         NewsVo newsVo=new NewsVo();
         newsVo.setPage(page);
         newsVo.setLimit(limit);
@@ -228,7 +229,7 @@ public class UserController {
      */
     @ApiOperation(consumes = "关注用户接口", value = "关注用户接口")
     @RequestMapping(value = "likeUser",method = RequestMethod.POST)
-    public ResultObj likeUser(Integer likeUserId){
+    public ResultObj likeUser(Integer likeUserId) throws UserIsNotException {
         Integer userid = SysUtils.getUser().getUserid();
         try {
             return userService.likeUser(userid,likeUserId);
@@ -245,7 +246,7 @@ public class UserController {
      */
     @ApiOperation(consumes = "取消关注接口", value = "取消关注接口")
     @RequestMapping(value = "unLikeUser",method = RequestMethod.POST)
-    public ResultObj unLikeUser(Integer likeUserId){
+    public ResultObj unLikeUser(Integer likeUserId) throws UserIsNotException {
         Integer userid = SysUtils.getUser().getUserid();
         try {
             return userService.unLikeUser(userid,likeUserId);
@@ -262,7 +263,7 @@ public class UserController {
      */
     @ApiOperation(consumes = "移除粉丝接口", value = "移除粉丝接口")
     @RequestMapping(value = "blockUser",method = RequestMethod.POST)
-    public ResultObj removeFan(Integer likeUserId){
+    public ResultObj removeFan(Integer likeUserId) throws UserIsNotException {
         Integer userid = SysUtils.getUser().getUserid();
         try {
             return userService.removeFan(userid,likeUserId);
@@ -278,7 +279,7 @@ public class UserController {
      */
     @GetMapping("showFans")
     @ApiOperation(consumes = "查询粉丝", value = "查询粉丝")
-    public DataGridView showFans(){
+    public DataGridView showFans() throws UserIsNotException {
         return userService.showFans();
     }
 
@@ -287,7 +288,7 @@ public class UserController {
      */
     @GetMapping("showIdol")
     @ApiOperation(consumes = "查询偶像", value = "查询偶像")
-    public DataGridView showIdol(){
+    public DataGridView showIdol() throws UserIsNotException {
         return userService.showIdol();
     }
 
@@ -313,7 +314,7 @@ public class UserController {
      */
     @GetMapping("showMe")
     @ApiOperation(consumes = "查询个人资料", value = "查询个人资料")
-    public DataGridView updateUser(){
+    public DataGridView updateUser() throws UserIsNotException {
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("userid",SysUtils.getUser().getUserid());
         User user = userService.getOne(queryWrapper);
@@ -340,7 +341,7 @@ public class UserController {
      */
     @GetMapping("showMeIndex")
     @ApiOperation(consumes = "查询个人主页", value = "查询个人主页")
-    public DataGridView showMeIndex(){
+    public DataGridView showMeIndex() throws UserIsNotException {
         return userService.showMeIndex();
     }
 
@@ -352,7 +353,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="targetUserId",value="他人userid",required=true),
     })
-    public DataGridView showOthersIndex(Integer targetUserId){
+    public DataGridView showOthersIndex(Integer targetUserId) throws UserIsNotException {
         return userService.showOthersIndex(targetUserId);
     }
 

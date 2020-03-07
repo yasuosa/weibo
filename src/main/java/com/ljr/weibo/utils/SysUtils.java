@@ -1,15 +1,14 @@
 package com.ljr.weibo.utils;
 
-import ch.qos.logback.core.util.TimeUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.ljr.weibo.common.ActiviUser;
 import com.ljr.weibo.domain.User;
+import com.ljr.weibo.exception.UserIsNotException;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.util.ByteSource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,8 +66,12 @@ public class SysUtils {
     /**
      * 获取ActiviUser
      */
-    public static ActiviUser getActiviUser(){
-        return (ActiviUser) SecurityUtils.getSubject().getPrincipal();
+    public static ActiviUser getActiviUser() throws UserIsNotException {
+        ActiviUser activiUser = (ActiviUser) SecurityUtils.getSubject().getPrincipal();
+        if(null ==activiUser){
+            throw new UserIsNotException(-1,"请先登陆|token失效");
+        }
+        return activiUser;
     }
 
 
@@ -76,7 +79,7 @@ public class SysUtils {
      * 得到session里面的user
      * @return
      */
-    public static User getUser(){
+    public static User getUser() throws UserIsNotException {
         return getActiviUser().getUser();
     }
 
