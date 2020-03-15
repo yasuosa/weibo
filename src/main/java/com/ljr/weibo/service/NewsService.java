@@ -27,7 +27,7 @@ public interface NewsService extends IService<News> {
     boolean removeImgByNid(Integer newsid);
 
 
-    DataGridView loadNews(NewsVo newsVo) throws UserIsNotException;
+    DataGridView loadNews(NewsVo newsVo,Integer targetUserId) throws UserIsNotException;
 
 
     ResultObj likeNews(Integer id) throws UserIsNotException;

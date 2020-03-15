@@ -17,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 文件上传接口
@@ -70,6 +68,7 @@ public class FileController {
     @PostMapping("uploadImg")
     @ApiOperation(consumes = "图片上传接口", value = "图片上传接口")
     public Map<String,Object> uploadImg(MultipartFile mf){
+        List<String> imgPaths=new ArrayList<>();
         String oldname = mf.getOriginalFilename();
         String newName= AppFileUtils.createNewNameTemp(oldname);
         String dirName= DateUtil.format(new Date(),"yyyy-MM-dd");
@@ -81,11 +80,12 @@ public class FileController {
         Map<String,Object> map=new HashMap<>();
         try {
             mf.transferTo(file);
-            map.put("value",dirName+"/"+newName);
+            imgPaths.add(dirName+"/"+newName);
         } catch (IOException e) {
             e.printStackTrace();
             map.put("value","img is not success upload!");
         }
+        map.put("value",imgPaths);
         return map;
     }
 

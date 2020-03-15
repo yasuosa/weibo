@@ -87,7 +87,7 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
     }
 
 
-    public DataGridView loadNews(NewsVo newsVo) throws UserIsNotException {
+    public DataGridView loadNews(NewsVo newsVo,Integer tatgetUserId) throws UserIsNotException {
 
         IPage<News> page=new Page<>(newsVo.getPage(),newsVo.getLimit());
         QueryWrapper<News> queryWrapper=new QueryWrapper<>();
@@ -100,8 +100,11 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
         if(SecurityUtils.getSubject().isAuthenticated()){
             userid= SysUtils.getUser().getUserid();
         }
-        if(Constant.SELECT_TYPE_MY.equals(newsVo.getSelectType())){
+        if(Constant.SELECT_TYPE_MY.equals(newsVo.getSelectType()) && null==tatgetUserId){
             queryWrapper.eq("userid",userid);
+        }
+        if(tatgetUserId!=null){
+            queryWrapper.eq("userid",tatgetUserId);
         }
         //查询当前用户的关注者
         if(Constant.SELECT_TYPE_MY_FOCUS.equals(newsVo.getSelectType())){

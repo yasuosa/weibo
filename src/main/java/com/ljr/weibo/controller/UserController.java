@@ -46,7 +46,7 @@ public class UserController {
 
     @Autowired
     private CommentService commentService;
-    
+
 
 
     @RequestMapping(value = "repeatNews",method = RequestMethod.POST)
@@ -203,7 +203,7 @@ public class UserController {
         newsVo.setPage(page);
         newsVo.setLimit(limit);
         newsVo.setSelectType(Constant.SELECT_TYPE_MY);
-        return newsService.loadNews(newsVo);
+        return newsService.loadNews(newsVo,null);
     }
 
     /**
@@ -218,7 +218,7 @@ public class UserController {
         newsVo.setPage(page);
         newsVo.setLimit(limit);
         newsVo.setSelectType(Constant.SELECT_TYPE_MY_FOCUS);
-        return newsService.loadNews(newsVo);
+        return newsService.loadNews(newsVo,null);
     }
 
 
@@ -358,4 +358,24 @@ public class UserController {
     }
 
 
+    /**
+     * 查询他人微博
+     */
+    @GetMapping("showOthersNews")
+    @ApiOperation(consumes = "查询他人微博", value = "查询他人微博")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="targetUserId",value="他人userid",required=true),
+    })
+    public DataGridView showOthersNews(Integer page,Integer limit,Integer targetUserId) throws UserIsNotException {
+        if(null == page){
+            page=1;
+        }
+        if(null == limit){
+            limit=10;
+        }
+        NewsVo newsVo=new NewsVo();
+        newsVo.setPage(page);
+        newsVo.setLimit(limit);
+        return newsService.loadNews(newsVo,targetUserId);
+    }
 }
