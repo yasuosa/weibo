@@ -62,6 +62,7 @@
 
   <select id="queryNumFansOrIdols" resultType="java.lang.Integer">
     select count(1) from  sys_relationship
-    where uid=#{uid} and  type=#{type}
+    where  aid=#{aid}  and  type=#{type}
   </select>
+
 </mapper>

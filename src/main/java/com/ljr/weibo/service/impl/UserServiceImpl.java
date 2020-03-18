@@ -151,8 +151,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         map.put("sex",user.getSex());
         map.put("name",user.getUsername());
         map.put("content",user.getContent());
-        Integer fansNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_FAN);
-        Integer idolsNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_IDOL);
+        Integer fansNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_IDOL);
+        Integer idolsNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_FAN);
         map.put("fansNum",fansNum);
         map.put("idolNum",idolsNum);
         map.put("icon",user.getImgurl());
@@ -174,15 +174,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         map.put("sex",user.getSex());
         map.put("name",user.getUsername());
         map.put("content",user.getContent());
-        Integer fansNum=userMapper.queryNumFansOrIdols(uid,Constant.RELATIONSHIP_FAN);
-        Integer idolsNum=userMapper.queryNumFansOrIdols(uid,Constant.RELATIONSHIP_IDOL);
+        Integer fansNum=userMapper.queryNumFansOrIdols(uid,Constant.RELATIONSHIP_IDOL);
+        Integer idolsNum=userMapper.queryNumFansOrIdols(uid,Constant.RELATIONSHIP_FAN);
         map.put("fansNum",fansNum);
         map.put("idolNum",idolsNum);
         map.put("icon",user.getImgurl());
         //判断是不是我的关注
         Integer i1 = userMapper.queryRelationship(myId, uid, Constant.RELATIONSHIP_IDOL);
         //判断是不是我的粉丝
-        Integer i2 = userMapper.queryRelationship(myId, uid, Constant.RELATIONSHIP_FAN);
+        Integer i2 = userMapper.queryRelationship(myId,uid, Constant.RELATIONSHIP_FAN);
         map.put("isIdol",i1==0?false:true);
         map.put("isFan",i2==0?false:true);
         QueryWrapper<News> qw=new QueryWrapper<>();

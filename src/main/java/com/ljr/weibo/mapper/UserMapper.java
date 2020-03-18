@@ -31,6 +31,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<Integer> queryAimIdByUid(@Param("uid") Integer userid,@Param("type") String type);
 
-    Integer queryNumFansOrIdols(@Param("uid") Integer userid,@Param("type") String type);
+    Integer queryNumFansOrIdols(@Param("aid") Integer aid,@Param("type") String type);
+
 
 }
