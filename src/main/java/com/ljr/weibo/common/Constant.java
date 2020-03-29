@@ -62,4 +62,7 @@ public interface Constant {
 
     /**发布的顶级者的类型**/
     Integer AUTHOR_REPEAT_TOP = 1;
+
+
+    Integer COMMENT_TOP = 0;
 }

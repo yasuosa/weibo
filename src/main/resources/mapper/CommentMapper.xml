@@ -4,15 +4,14 @@
   <resultMap id="BaseResultMap" type="com.ljr.weibo.domain.Comment">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
     <result column="nid" jdbcType="INTEGER" property="nid" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="likenum" jdbcType="INTEGER" property="likenum" />
-    <result column="nolikenum" jdbcType="INTEGER" property="nolikenum" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, nid, `uid`, content, `time`, likenum, nolikenum
+    id, pid, nid, `uid`, content, `time`
   </sql>
 </mapper>
