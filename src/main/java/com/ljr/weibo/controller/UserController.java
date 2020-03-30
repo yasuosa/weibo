@@ -69,6 +69,7 @@ public class UserController {
             authorRepeat.setUserid(SysUtils.getUser().getUserid());
             authorRepeat.setIcon(SysUtils.getUser().getImgurl());
             authorRepeat.setName(SysUtils.getUser().getUsername());
+            authorRepeat.setId(id);
             news.setAuthor(WeiBoUtils.getAuthorJsonString(author,authorRepeat));
 
             news.setId(null);

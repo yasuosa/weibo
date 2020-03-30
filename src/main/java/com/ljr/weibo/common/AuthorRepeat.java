@@ -16,6 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AuthorRepeat implements Serializable {
 
+    private Integer id;
     private Integer index;
     private String name;
     private String content="//";
