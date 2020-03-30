@@ -11,6 +11,7 @@ import com.ljr.weibo.common.Constant;
 import com.ljr.weibo.common.DataGridView;
 import com.ljr.weibo.common.ResultObj;
 import com.ljr.weibo.domain.Comment;
+import com.ljr.weibo.domain.User;
 import com.ljr.weibo.domain.UserLikeNews;
 import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.mapper.CommentMapper;
@@ -115,6 +116,9 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
             }
             queryWrapper.in( "userid", focusIds);
         }
+        if(-1 != newsVo.getId()){
+            queryWrapper.eq("id",newsVo.getId());
+        }
         newsMapper.selectPage(page,queryWrapper);
         //分页
         List<News> newsList = page.getRecords();
@@ -126,7 +130,7 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
                 news.setIsLike(isLike);
             }
             news.setImgUrls(findImgsByNid(news.getNewsid()));
-            commentQueryWrapper.eq("nid",news.getNewsid());
+            commentQueryWrapper.eq("nid",news.getId());
             List<Comment> comments = commentMapper.selectList(commentQueryWrapper);
             news.setCommentnum(comments.size());
             //头像地址
@@ -162,6 +166,15 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
             userLikeNewsMapper.deleteById(userLike.getId());
             return new ResultObj(200,"取消点赞成功");
         }
+    }
+
+    @Override
+    public DataGridView queryNewsById(Integer id) throws UserIsNotException {
+        NewsVo newsVo=new NewsVo();
+        newsVo.setLimit(1);
+        newsVo.setPage(1);
+        newsVo.setId(id);
+        return this.loadNews(newsVo,null);
     }
 
 

@@ -19,4 +19,6 @@ public class NewsVo extends BaseVo{
 
     @ApiModelProperty(value = "搜索的微博的内容")
     private String content;
+
+    private Integer id =-1;
 }

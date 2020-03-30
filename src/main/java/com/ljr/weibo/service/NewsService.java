@@ -31,5 +31,7 @@ public interface NewsService extends IService<News> {
 
 
     ResultObj likeNews(Integer id) throws UserIsNotException;
+
+    DataGridView  queryNewsById(Integer id) throws UserIsNotException;
 }
 

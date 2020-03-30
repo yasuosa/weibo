@@ -24,9 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("news")
@@ -65,6 +63,16 @@ public class NewsController {
         return  newsService.loadNews(newsVo,null);
     }
 
+
+    /**
+     * 单个微博搜索
+     * @return
+     */
+    @GetMapping("searchOneNews")
+    @ApiOperation(consumes = "单个微博搜索", value = "单个微博搜索")
+    public DataGridView  searchOneNew(Integer id) throws UserIsNotException {
+        return  newsService.queryNewsById(id);
+    }
 
 
 
