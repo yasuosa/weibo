@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.bcel.Const;
 import org.aspectj.apache.bcel.classfile.Code;
 
 import javax.xml.transform.Result;
@@ -19,6 +20,7 @@ public class ResultObj {
 
 
     public static final ResultObj ERROR =new ResultObj(Constant.CODE_WRONG,Constant.ERROR) ;
+    public static final ResultObj YES = new ResultObj(Constant.CODE_TRUE,"成功") ;
 
 
     private Integer code;

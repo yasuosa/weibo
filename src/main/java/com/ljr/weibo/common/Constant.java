@@ -65,4 +65,7 @@ public interface Constant {
 
 
     Integer COMMENT_TOP = 0;
+
+
+    String SEESION_REIDS_KEY="shiro:session:";
 }

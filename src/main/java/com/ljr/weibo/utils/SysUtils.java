@@ -129,5 +129,20 @@ public class SysUtils {
     }
 
 
+    /**
+     * 获取id
+     * @param name
+     * @return
+     */
+    public static String getWebSocketUserId(String name){
+        String begin = name.substring(name.indexOf("userid"));
+        String userid = begin.substring(begin.indexOf("=")+1, begin.indexOf(","));
+        return userid;
+    }
 
+    public static String getWebSocketUserName(String name) {
+        String begin = name.substring(name.indexOf("username"));
+        String userid = begin.substring(begin.indexOf("=")+1, begin.indexOf(","));
+        return  userid;
+    }
 }
