@@ -17,19 +17,24 @@ import com.ljr.weibo.exception.UserIsNotException;
 import com.ljr.weibo.mapper.CommentMapper;
 import com.ljr.weibo.mapper.UserLikeNewsMapper;
 import com.ljr.weibo.mapper.UserMapper;
+import com.ljr.weibo.service.UserService;
 import com.ljr.weibo.utils.SysUtils;
 import com.ljr.weibo.vo.BaseVo;
 import com.ljr.weibo.vo.NewsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ljr.weibo.mapper.NewsMapper;
@@ -55,6 +60,10 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
 
     @Autowired
     private UserLikeNewsMapper userLikeNewsMapper;
+
+    @Autowired
+    @Lazy
+    private UserService userService;
 
     @Override
     @Cacheable(cacheNames = "img:news:",key = "#nid")
@@ -106,6 +115,9 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
         }
         if(tatgetUserId!=null){
             queryWrapper.eq("userid",tatgetUserId);
+        }
+        if(newsVo.getIds().size()!=0){
+            queryWrapper.or().in("userid",newsVo.getIds());
         }
         //查询当前用户的关注者
         if(Constant.SELECT_TYPE_MY_FOCUS.equals(newsVo.getSelectType())){
@@ -175,6 +187,21 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News> implements Ne
         newsVo.setPage(1);
         newsVo.setId(id);
         return this.loadNews(newsVo,null);
+    }
+
+    @Override
+    public DataGridView searchNews(NewsVo newsVo) throws UserIsNotException {
+        Map<String,Object> map=new HashMap<>();
+        List<Map<String, Object>> users = userService.queryByUserName(newsVo.getContent());
+        map.put("users",users);
+        for (Map<String, Object> user : users) {
+            newsVo.getIds().add((Integer) user.get("userid"));
+        }
+        DataGridView dataGridView = this.loadNews(newsVo, null);
+        Object data = dataGridView.getData();
+        map.put("news",data);
+        dataGridView.setData(map);
+        return dataGridView;
     }
 
 

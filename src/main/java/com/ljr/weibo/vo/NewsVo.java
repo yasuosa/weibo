@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
@@ -21,4 +24,6 @@ public class NewsVo extends BaseVo{
     private String content;
 
     private Integer id =-1;
+
+    private List<Integer> ids=new ArrayList<>();
 }

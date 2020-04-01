@@ -29,10 +29,7 @@ import com.ljr.weibo.mapper.UserMapper;
 import com.ljr.weibo.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -161,6 +158,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Integer count = newsMapper.selectCount(qw);
         map.put("count",count);
         return new DataGridView(200,"查询成功",null,map);
+    }
+
+    /**
+     * 根据username查询
+     * @param username
+     * @return
+     */
+    public List<Map<String,Object>> queryByUserName(String username){
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.like("username",username);
+        List<User> users = userMapper.selectList(queryWrapper);
+        List<Map<String,Object>> userMsg=new ArrayList<>();
+        for (User user : users) {
+            Map<String,Object> map=new HashMap<>();
+            Integer userid = user.getUserid();
+            map.put("userid", userid);
+            map.put("sex",user.getSex());
+            map.put("name",user.getUsername());
+            map.put("content",user.getContent());
+            Integer fansNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_IDOL);
+            Integer idolsNum=userMapper.queryNumFansOrIdols(userid,Constant.RELATIONSHIP_FAN);
+            map.put("fansNum",fansNum);
+            map.put("idolNum",idolsNum);
+            map.put("icon",user.getImgurl());
+            QueryWrapper<News> qw=new QueryWrapper<>();
+            qw.eq("userid",userid);
+            Integer count = newsMapper.selectCount(qw);
+            map.put("count",count);
+            userMsg.add(map);
+        }
+        return userMsg;
     }
 
     @Override

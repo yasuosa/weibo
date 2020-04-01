@@ -60,7 +60,7 @@ public class NewsController {
         newsVo.setLimit(limit);
         newsVo.setContent(content);
         newsVo.setSelectType(Constant.SELECT_TYPE_ALL);
-        return  newsService.loadNews(newsVo,null);
+        return  newsService.searchNews(newsVo);
     }
 
 

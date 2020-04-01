@@ -9,6 +9,9 @@ import com.ljr.weibo.vo.BaseVo;
 import com.ljr.weibo.vo.NewsVo;
 import com.ljr.weibo.vo.UserVo;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UserService extends IService<User> {
 
 
@@ -47,6 +50,7 @@ public interface UserService extends IService<User> {
 
     DataGridView showOthersIndex(Integer uid) throws UserIsNotException;
 
+    List<Map<String,Object>> queryByUserName(String username);
 }
 
 
