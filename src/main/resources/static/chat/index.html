@@ -92,6 +92,7 @@
                 if(res.code==200){
                     alert(res.msg);
                     $.cookie("TOKEN",res.token,{expires:2}) //有效期 2天
+                    window.location.href='chat.html';
                     console.log(res.token);
 
                 }
